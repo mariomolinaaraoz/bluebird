@@ -1,4 +1,20 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+    images: {
+        remotePatterns: [
+            {
+                hostname: 'avatars.githubusercontent.com',
+            },
+            {
+                hostname: 'fvvtqpkgirpnlmiemgcn.supabase.co',
+            },
+        ],        
+    }
+};
+
 
 export default nextConfig;
+
+
+
+
