@@ -12,7 +12,7 @@ export default async function Login() {
   } = await supabase.auth.getSession();
 
   if (session) {
-    redirect("/");
+    redirect("https://bluebird-wine.vercel.app/");
   }
 
   return (
