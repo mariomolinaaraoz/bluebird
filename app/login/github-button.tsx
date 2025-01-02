@@ -10,7 +10,7 @@ export default function GitHubButton() {
     await supabase.auth.signInWithOAuth({
       provider: "github",
       options: {
-        redirectTo: "https://bluebird-wine.vercel.app",
+        redirectTo: "http://localhost:3000/auth/callback",
       },
     });
   };
