@@ -23,7 +23,7 @@ export default function AuthButtonClient({
     await supabase.auth.signInWithOAuth({
       provider: "github",
       options: {
-        redirectTo: "https://bluebird-wine.vercel.app/auth/callback",
+        redirectTo: "https://bluebird-wine.vercel.app",
       },
     });
   };
