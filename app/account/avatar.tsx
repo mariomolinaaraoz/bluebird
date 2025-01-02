@@ -18,30 +18,29 @@ export default function Avatar({
   const supabase = createClientComponentClient<Database>()
   const [avatarUrl, setAvatarUrl] = useState<Profiles['avatar_url']>(url)
   const [uploading, setUploading] = useState(false)
- 
-    useEffect(() => {
-      if (url?.startsWith("https://")){
-        setAvatarUrl(url)        
-      }else{
-        async function downloadImage(path: string) {
-          try {
-            const { data, error } = await supabase.storage.from('avatars').download(path)
-            if (error) {
-              throw error
-            }        
-            
-            const url = URL.createObjectURL(data)        
-            setAvatarUrl(url)        
-          } catch (error) {
-            console.log('Error downloading image: ', error)
-          }
-        }
-        
-        if (url) downloadImage(url)
+
+  const downloadImage = async (path: string) => {
+    try {
+      const { data, error } = await supabase.storage.from('avatars').download(path)
+      if (error) {
+        throw error
       }
-      }, [url, supabase])
-    
-    
+
+      const url = URL.createObjectURL(data)
+      setAvatarUrl(url)
+    } catch (error) {
+      console.log('Error downloading image: ', error)
+    }
+  }
+
+  useEffect(() => {
+    if (url?.startsWith("https://")) {
+      setAvatarUrl(url)
+    } else {
+      if (url) downloadImage(url)
+    }
+  }, [url, supabase])
+
   const uploadAvatar: React.ChangeEventHandler<HTMLInputElement> = async (event) => {
     try {
       setUploading(true)
@@ -82,7 +81,7 @@ export default function Avatar({
       ) : (
         <div className="avatar no-image" style={{ height: size, width: size }} />
       )}
-      <div className="flex flex-col gap-8" style={{ width: size }}>        
+      <div className="flex flex-col gap-8" style={{ width: size }}>
         <label className="button primary block" htmlFor="single">
           {uploading ? 'Uploading ...' : 'Upload'}
         </label>

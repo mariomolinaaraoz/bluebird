@@ -1,6 +1,7 @@
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import Image from "next/image";
+import { User } from '@supabase/auth-helpers-nextjs';
 
 export default function NewTweet({user}:{user: User}) {
   const addTweet = async (formData: FormData) => {

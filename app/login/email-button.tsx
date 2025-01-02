@@ -35,7 +35,7 @@ export default function EmailButton() {
         <form className="form-widget" onSubmit={handleLogin}>
           <div className="flex flex-col gap-4">
             <input
-              className=""
+              className="text-black"
               type="email"
               placeholder="Your email"
               value={email}
@@ -43,7 +43,7 @@ export default function EmailButton() {
               onChange={(e) => setEmail(e.target.value)}
             />
             <input
-              className=""
+              className="text-black"
               type="password"
               placeholder="password"
               value={password}

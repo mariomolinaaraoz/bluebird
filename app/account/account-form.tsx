@@ -72,6 +72,10 @@ export default function AccountForm({ user }: { user: User | null }) {
     }
   }
 
+  if (!user) {
+    return <p>User is not available</p>
+  }
+
   return (
     <div className="form-widget">
       <Avatar
