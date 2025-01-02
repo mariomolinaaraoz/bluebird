@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
       }
 
       // Si todo sale bien, redirige a la página de inicio
-      return NextResponse.redirect("https://bluebird-wine.vercel.app/"); // Redirige a donde necesites
+      return NextResponse.redirect("/"); // Redirige a donde necesites
     } catch (error) {
       console.error("Unexpected error:", error);
       return NextResponse.redirect("/login?error=true");
