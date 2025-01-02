@@ -3,6 +3,9 @@
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Image from "next/image";
 
+import { Button } from "@/components/ui/button"
+import { GithubIcon } from "lucide-react";
+
 export default function GitHubButton() {
   const supabase = createClientComponentClient<Database>();
 
@@ -16,13 +19,17 @@ export default function GitHubButton() {
   };
 
   return (
-    <button type="button" onClick={handleSignIn} className="hover:bg-gray-800 p-8 rounded-xl" title="Github">
-      <Image
-        src="/github-mark-white.png"
-        alt="GitHub logo"
-        width={100}
-        height={100}
-      />
-    </button>
+    <div className="mt-4">
+      <Button
+        // onClick={() => signIn('github', { callbackUrl: '/dashboard' })}
+        onClick={handleSignIn}
+        className="w-full flex items-center justify-center"
+        variant="outline"
+        title="Github"
+      >
+        <GithubIcon className="mr-2 h-4 w-4" />
+        Sign in with GitHub
+      </Button>
+    </div>
   );
 }
