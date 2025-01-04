@@ -4,6 +4,10 @@ import { useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+
 export default function EmailButton() {
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
@@ -11,11 +15,11 @@ export default function EmailButton() {
   const supabase = createClientComponentClient<Database>();
   const router = useRouter();
 
-  const handleLogin = async (event : any) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault()
 
     setLoading(true)
-    const { error } = await supabase.auth.signInWithPassword({ 
+    const { error } = await supabase.auth.signInWithPassword({
       email: email,
       password: password,
     })
@@ -29,35 +33,34 @@ export default function EmailButton() {
   }
 
   return (
-    <div className="row flex flex-center">
-      <div className="col-6 form-widget">
-        <h1 className="header">Login with email</h1>        
-        <form className="form-widget" onSubmit={handleLogin}>
-          <div className="flex flex-col gap-4">
-            <input
-              className="text-black"
-              type="email"
-              placeholder="Your email"
-              value={email}
-              required={true}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <input
-              className="text-black"
-              type="password"
-              placeholder="password"
-              value={password}
-              required={true}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <div>
-            <button className={'button block'} disabled={loading}>
-              {loading ? <span>Loading</span> : <span>Login</span>}
-            </button>
-          </div>
-        </form>
+    <form onSubmit={handleSubmit}>
+      <div className="mt-4">
+        <Label htmlFor="email">Email</Label>
+        <Input
+          type="email"
+          placeholder="Email"
+          id="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
+          required
+        />
       </div>
-    </div>
+      <div className="mt-4">
+        <Label htmlFor="password">Password</Label>
+        <Input
+          type="password"
+          placeholder="Password"
+          id="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
+          required
+        />
+      </div>
+      <div className="flex items-center justify-between mt-4">
+        <Button type="submit" className="w-full">Login</Button>
+      </div>
+    </form>
   );
 }

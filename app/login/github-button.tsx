@@ -1,7 +1,9 @@
 "use client";
 
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import Image from "next/image";
+
+import { Button } from "@/components/ui/button"
+import { GithubIcon } from 'lucide-react'
 
 export default function GitHubButton() {
   const supabase = createClientComponentClient<Database>();
@@ -10,19 +12,23 @@ export default function GitHubButton() {
     await supabase.auth.signInWithOAuth({
       provider: "github",
       options: {
-        redirectTo: "https://bluebird-wine.vercel.app/auth/callback",
+        redirectTo: "http://localhost:3000/auth/callback",
       },
     });
   };
 
   return (
-    <button type="button" onClick={handleSignIn} className="hover:bg-gray-800 p-8 rounded-xl" title="Github">
-      <Image
-        src="/github-mark-white.png"
-        alt="GitHub logo"
-        width={100}
-        height={100}
-      />
-    </button>
+    <div className="mt-4">
+      <Button
+        type="button"
+        title="Github"
+        onClick={handleSignIn}
+        className="w-full flex items-center justify-center"
+        variant="outline"
+      >
+        <GithubIcon className="mr-2 h-4 w-4" />
+        Sign in with GitHub
+      </Button>
+    </div>
   );
 }
