@@ -13,7 +13,7 @@ export default async function Login() {
   } = await supabase.auth.getSession();
 
   if (session) {
-    redirect("/");
+    redirect("/dashboard");
   }
 
   return (

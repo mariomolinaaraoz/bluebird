@@ -18,16 +18,22 @@ export default function EmailButton() {
   const handleSubmit = async (event: any) => {
     event.preventDefault()
 
+    if (!email || !password) {
+      alert("Both email and password are required.");
+      return;
+    }
+
     setLoading(true)
+
     const { error } = await supabase.auth.signInWithPassword({
       email: email,
       password: password,
     })
 
     if (error) {
-      alert(error || error)
+      alert(error || "An error occurred.")
     } else {
-      router.refresh();
+      router.refresh();      
     }
     setLoading(false)
   }
@@ -44,6 +50,7 @@ export default function EmailButton() {
           onChange={(e) => setEmail(e.target.value)}
           className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
           required
+          aria-label="Email Address"
         />
       </div>
       <div className="mt-4">
@@ -56,10 +63,13 @@ export default function EmailButton() {
           onChange={(e) => setPassword(e.target.value)}
           className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
           required
+          aria-label="Password"
         />
       </div>
       <div className="flex items-center justify-between mt-4">
-        <Button type="submit" className="w-full">Login</Button>
+        <Button type="submit" className="w-full" disabled={loading}>
+          {loading ? "Loading..." : "Login"}
+        </Button>
       </div>
     </form>
   );

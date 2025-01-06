@@ -13,11 +13,11 @@ export default async function Admin_Page() {
     } = await supabase.auth.getSession();
   
     if (!session) {
-      redirect("/login");
+      redirect("/");
     }
 
 	if (session?.user.user_metadata.role !== "admin") {
-		 return redirect("/");
+		 return redirect("/dashboard");
 	}
 
   interface LikeBlog {
