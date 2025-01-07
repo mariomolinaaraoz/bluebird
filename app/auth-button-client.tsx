@@ -39,7 +39,7 @@ export default function AuthButtonClient({ session }: { session: Session | null 
 
   return session ? (
     <button
-      className={`text-xs text-gray-400 ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+      className={`text-gray-400 ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
       onClick={handleSignOut}
       disabled={isLoading}
     >

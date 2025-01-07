@@ -25,21 +25,32 @@ export default async function Admin_Page() {
   }
   
 
-	const { data } = await supabase
-    .from("blogs")    
-    .select("*, author: profiles(*), likes_blogs(user_id)").order('created_at', {ascending:false});
+	const { data: blogsData } = await supabase
+    .from("blogs")
+    .select("*, author: profiles(*), likes_blogs(user_id)")
+    .order("created_at", { ascending: false });
 
   const blogs =
-    data?.map((blog) => ({
-      ...blog,
-      author: Array.isArray(blog.author) ? blog.author[0] : blog.author,
-      user_has_liked_blog: !!blog.likes_blogs.find(
-        (like:LikeBlog) => like.user_id === session.user.id
-      ),
-      likes: blog.likes_blogs.length,
-    })) ?? [];
+    blogsData?.map(async (blog) => {
+      const { data: signedUrlData } = await supabase.storage
+        .from("blog_image")
+        .createSignedUrl(blog.image, 60 * 60); // URL válida por 1 hora
+
+      return {
+        ...blog,
+        author: Array.isArray(blog.author) ? blog.author[0] : blog.author,
+        user_has_liked_blog: !!blog.likes_blogs.find(
+          (like:LikeBlog) => like.user_id === session.user.id
+        ),
+        likes: blog.likes_blogs.length,
+        signedImageUrl: signedUrlData?.signedUrl || null, // URL firmada
+      };
+    }) ?? [];
+
+    const resolvedBlogs = await Promise.all(blogs);
 
 	return (
+    
 		<div>
 			<h1 className="text-3xl font-bold">Admin role access only</h1>
       <a className="my-4" href="/">Home</a>
@@ -48,7 +59,7 @@ export default async function Admin_Page() {
 
       <h1>mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm</h1>
       <NewBlog user={session.user} />
-			<Blogs blogs={blogs} />
+			<Blogs blogs={resolvedBlogs} />
       <h1>mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm</h1>
 		</div>
 	);

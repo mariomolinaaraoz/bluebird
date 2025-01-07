@@ -2,15 +2,14 @@
 
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import LikesBlog from "./likes-blog";
-import { useState,useEffect, useOptimistic } from "react";
+import { useState, useEffect, useOptimistic } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-
 export default function Blogs({ blogs }: { blogs: BlogWithAuthor[] }) {
   const [optimisticBlogs, addOptimisticBlog] = useOptimistic<
-  BlogWithAuthor[],
-  BlogWithAuthor
+    BlogWithAuthor[],
+    BlogWithAuthor
   >(blogs, (currentOptimisticBlogs, newBlog) => {
     const newOptimisticBlogs = [...currentOptimisticBlogs];
     const index = newOptimisticBlogs.findIndex(
@@ -44,26 +43,21 @@ export default function Blogs({ blogs }: { blogs: BlogWithAuthor[] }) {
     };
   }, [supabase, router]);
 
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-  const storage = process.env.NEXT_PUBLIC_SUPABASE_STORAGE || "";
-
-
   return optimisticBlogs.map((blog) => (
     <div
       key={blog.id}
       className="border border-gray-800 border-t-0 px-4 py-8 flex"
     >
-      <div className="h-12 w-12">        
-          <Image
-            className="rounded-full"
-            src={blog.author.avatar_url}
-            alt="blog user avatar"
-            width={48}
-            height={48}
-          />
-        
-  </div>
-      
+      <div className="h-12 w-12">
+        <Image
+          className="rounded-full"
+          src={blog.author.avatar_url}
+          alt="blog user avatar"
+          width={48}
+          height={48}
+        />
+      </div>
+
       <div className="ml-4">
         <p>
           <span className="font-bold">{blog.author.username}</span>
@@ -72,25 +66,23 @@ export default function Blogs({ blogs }: { blogs: BlogWithAuthor[] }) {
           </span>
         </p>
         <p>{blog.title}</p>
-        <p>{blog.content}</p>        
-        {blog.image ? (
+        <p>{blog.content}</p>
+
+        {blog.signedImageUrl ? (
           <Image
             width={150}
             height={150}
-            src={url+storage+ "/blog_image/"+blog.image}
+            src={blog.signedImageUrl}
             alt={blog.image}
-            className=""
-            style={{ height: 150, width: 150 }}
+            className="rounded-lg"
           />
         ) : (
-          <div
-            className="avatar no-image"
-            // style={{ height: 150, width: 150 }}
-          />
-        )} 
+          <div className="avatar no-image" style={{ height: 150, width: 150 }} />
+        )}
         <LikesBlog blog={blog} addOptimisticBlog={addOptimisticBlog} />
       </div>
     </div>
   ));
 }
+
 

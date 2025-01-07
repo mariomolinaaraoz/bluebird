@@ -1,7 +1,10 @@
 'use client'
 import { useCallback, useEffect, useState } from 'react'
 import { User, createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import Avatar from "./avatar";
+import AvatarUser from "./avatar";
+
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
 
 export default function AccountForm({ user }: { user: User | null }) {
   const supabase = createClientComponentClient<Database>()
@@ -78,21 +81,23 @@ export default function AccountForm({ user }: { user: User | null }) {
 
   return (
     <div className="form-widget">
-      <Avatar
-      uid={user.id}
-      url={avatar_url}
-      size={150}
-      onUpload={(url) => {
-        setAvatarUrl(url)
-        updateProfile({ fullname, username, website, avatar_url: url })
-      }}
-    />
+      <div className='flex flex-items justify-center py-4'>
+        <AvatarUser
+          uid={user.id}
+          url={avatar_url}
+          size={150}
+          onUpload={(url) => {
+            setAvatarUrl(url)
+            updateProfile({ fullname, username, website, avatar_url: url })
+          }}
+        />
+      </div>
       <div>
-        <label htmlFor="email">Email</label>
-        <input 
-          id="email" 
-          type="text" 
-          value={user?.email} 
+        <label htmlFor="email">Email:</label>
+        <input
+          id="email"
+          type="text"
+          value={user?.email}
           className="bg-neutral-500"
           disabled
         />
@@ -118,14 +123,13 @@ export default function AccountForm({ user }: { user: User | null }) {
         />
       </div>
       <div>
-        <label htmlFor="website">Website</label>
-        <input
-          id="website"
-          type="url"
-          value={website || ''}
-          className="bg-neutral-500"
-          onChange={(e) => setWebsite(e.target.value)}
-        />
+      <Label htmlFor="website">Website</Label>
+          <Input
+            id="website"
+            type="url"
+            value={website || ''}
+            onChange={(e) => setWebsite(e.target.value)}
+          />
       </div>
 
       <div>
@@ -137,7 +141,7 @@ export default function AccountForm({ user }: { user: User | null }) {
           {loading ? 'Loading ...' : 'Update'}
         </button>
       </div>
-      <div>        
+      <div>
       </div>
     </div>
   )

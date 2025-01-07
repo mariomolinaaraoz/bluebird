@@ -2,9 +2,13 @@
 import React, { useEffect, useState } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import Image from 'next/image'
+
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+
 type Profiles = Database['public']['Tables']['profiles']['Row']
 
-export default function Avatar({
+export default function AvatarUser({
   uid,
   url,
   size,
@@ -68,35 +72,31 @@ export default function Avatar({
   }
 
   return (
-    <div className='flex flex-col gap-8'>
-      {avatarUrl ? (        
-        <Image
-          width={size}
-          height={size}
-          src={avatarUrl}
-          alt="Avatar"
-          className=""
-          style={{ height: size, width: size }}
-        />
-      ) : (
-        <div className="avatar no-image" style={{ height: size, width: size }} />
-      )}
-      <div className="flex flex-col gap-8" style={{ width: size }}>
-        <label className="button primary block" htmlFor="single">
-          {uploading ? 'Uploading ...' : 'Upload'}
-        </label>
-        <input
-          style={{
-            visibility: 'hidden',
-            position: 'absolute',
-          }}
-          type="file"
-          id="single"
-          accept="image/*"
-          onChange={uploadAvatar}
-          disabled={uploading}
-        />
-      </div>
+    <div className=''>
+      <Image
+        src={avatarUrl || "/default-avatar.png"}
+        alt="Avatar del usuario"
+        width={100}
+        height={100}
+        className="rounded-full"
+      />
+      <Label
+        className="absolute top-36 left-64 rounded-full w-12 h-12 flex items-center justify-center p-0 bg-secondary button"
+        htmlFor="single"
+      >
+        {uploading ? 'Uploading ...' : 'Edit'}
+      </Label>
+      <Input
+        style={{
+          visibility: 'hidden',
+          position: 'absolute',
+        }}
+        id="single"
+        type="file"
+        accept="image/*"
+        onChange={uploadAvatar}
+        disabled={uploading}
+      />
     </div>
   )
 }
