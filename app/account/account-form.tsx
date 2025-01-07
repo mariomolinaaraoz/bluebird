@@ -5,6 +5,7 @@ import AvatarUser from "./avatar";
 
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 
 export default function AccountForm({ user }: { user: User | null }) {
   const supabase = createClientComponentClient<Database>()
@@ -92,55 +93,50 @@ export default function AccountForm({ user }: { user: User | null }) {
           }}
         />
       </div>
-      <div>
-        <label htmlFor="email">Email:</label>
-        <input
-          id="email"
-          type="text"
-          value={user?.email}
-          className="bg-neutral-500"
-          disabled
-        />
-      </div>
-      <div>
-        <label htmlFor="fullName">Full Name</label>
-        <input
-          id="fullName"
-          type="text"
-          value={fullname || ''}
-          className="bg-neutral-500"
-          onChange={(e) => setFullname(e.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="username">Username</label>
-        <input
-          id="username"
-          type="text"
-          value={username || ''}
-          className="bg-neutral-500"
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </div>
-      <div>
-      <Label htmlFor="website">Website</Label>
+
+      <div className='space-y-4'>
+        <div>
+          <Label htmlFor="email">Email</Label>
+          <Input id="email" type="text" value={user?.email || ''} disabled />
+        </div>
+        <div>
+          <Label htmlFor="fullName">Full Name</Label>
+          <Input
+            id="fullName"
+            type="text"
+            value={fullname || ''}
+            onChange={(e) => setFullname(e.target.value)}
+          />
+        </div>
+        <div>
+          <Label htmlFor="username">Username</Label>
+          <Input
+            id="username"
+            type="text"
+            value={username || ''}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
+        <div>
+          <Label htmlFor="website">Website</Label>
           <Input
             id="website"
             type="url"
             value={website || ''}
             onChange={(e) => setWebsite(e.target.value)}
           />
+        </div>
       </div>
 
-      <div>
-        <button
-          className="button primary block"
+      <div className="text-center py-4">
+        <Button
           onClick={() => updateProfile({ fullname, username, website, avatar_url })}
           disabled={loading}
         >
-          {loading ? 'Loading ...' : 'Update'}
-        </button>
+          {loading ? 'Loading ...' : 'Update Profile'}
+        </Button>
       </div>
+
       <div>
       </div>
     </div>
